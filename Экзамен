@@ -1,0 +1,92 @@
+#include <iostream>
+#include <utility>
+//#include <time.h>
+
+using namespace std;
+
+#define ROWS 22
+#define COLUMNS 2
+
+pair<int, int> find(int Arr[ROWS][COLUMNS]);
+void sort(int Arr[ROWS][COLUMNS]);
+
+int main()
+{
+	setlocale(0, ".1251");
+
+	//srand(time(NULL));
+
+	int Arr[ROWS][COLUMNS];
+	pair<int, int> idxs;
+
+	cout << "Введіть матрицю з 22-ох рядкiв i 2-ох стовпцiв:" << endl;
+	for (int i = 0; i < ROWS; ++i) {
+		for (int j = 0; j < COLUMNS; ++j) {
+			//Arr[i][j] = rand() % 100;
+			cin >> Arr[i][j];
+			cout << Arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	idxs = find(Arr);
+	cout << endl << "Номера двох сусiднiх рядкiв, сума елементiв в яких максимальна (перший рядок пiд номером 0):" << endl;
+	cout << idxs.first << " та " << idxs.second << endl;
+
+	sort(Arr);
+	cout << endl << "Матриця, в якiй кожен рядок вiдсортований за спаданням:" << endl;
+	for (int i = 0; i < ROWS; ++i)
+	{
+		for (int j = 0; j < COLUMNS; ++j)
+		{
+			cout << Arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	system("pause>>void");
+
+	return 0;
+}
+
+pair<int, int> find(int Arr[ROWS][COLUMNS])
+{
+	int sum = 0, max_sum = 0;
+	int first_row = 0, second_row = 0;
+
+	for (int i = 0; i < ROWS - 1; ++i)
+	{
+		for (int j = 0; j < COLUMNS; ++j)
+		{
+			sum += Arr[i][j] + Arr[i + 1][j];
+		}
+		if (sum > max_sum)
+		{
+			max_sum = sum;
+			first_row = i;
+			second_row = i + 1;
+		}
+		sum = 0;
+	}
+
+	return make_pair(first_row, second_row);
+}
+
+void sort(int Arr[ROWS][COLUMNS])
+{
+	for (int i = 0; i < ROWS; ++i)
+	{
+		for (int j = 0; j < COLUMNS - 1; ++j)
+		{
+			for (int k = j + 1; k < COLUMNS; ++k)
+			{
+				if(Arr[i][k] > Arr[i][j])
+				{
+					int buff = Arr[i][j];
+					Arr[i][j] = Arr[i][k];
+					Arr[i][k] = buff;
+				}
+			}
+		}
+	}
+}
